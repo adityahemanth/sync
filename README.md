@@ -42,3 +42,4 @@ Architecture :
 	Key - value (object) ( memory / disk ? ( No corruption ))
 	Logs ? - where are they stored ?
 	what if it is corrupted. 
+
