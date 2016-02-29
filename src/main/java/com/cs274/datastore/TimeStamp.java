@@ -1,6 +1,5 @@
 package com.cs274.datastore;
 
-
 public class TimeStamp {
 	private static long time = 0;
 
