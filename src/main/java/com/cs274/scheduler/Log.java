@@ -1,4 +1,4 @@
-package com.cs274.datastore;
+package com.cs274.scheduler;
 
 public class Log {
 
@@ -9,9 +9,13 @@ public class Log {
 
 	public static String getInstance() {
 		if(log == null)
-			log = new String;
+			log = "";
 
 		return log;
 	}
 
 }
+
+
+
+// LSNtransaction	object	modified	before-image	time

@@ -11,7 +11,7 @@ public class Memcache extends HashMap{
 
 	public static Memcache getInstance(){
 		if(cache == null)
-			cache = new HashMap<String, String>();
+			cache = (Memcache) new HashMap<String, String>();
 
 		return cache;
 	}

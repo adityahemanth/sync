@@ -11,7 +11,7 @@ public class LockTable extends HashMap{
 
 	public static LockTable getInstance() {
 		if(table == null)
-			table = new Hashmap<String, String>();
+			table = (LockTable) new HashMap<String, String>();
 
 		return table;
 	}
