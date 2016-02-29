@@ -5,14 +5,28 @@ public class Page {
 
 	private String value;
 	private long lastupdated;
+
 	public Page() {
-		lastupdated = TimeStamp.getTime(); 
+		 updateTime();
 	}
 
 	public String getValue()
 	{
 		return value;
 	}
+
+	public void setValue(String value){
+		this.value = value;
+		lastupdated = updateTime();
+	}
+
+	private void updateTime(){
+
+		lastupdated = TimeStamp.getTime();
+
+	}
+
+
 /*	Structure 
 
 	Meta data - time stamp,
