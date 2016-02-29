@@ -17,7 +17,7 @@ public class Page {
 
 	public void setValue(String value){
 		this.value = value;
-		lastupdated = updateTime();
+		updateTime();
 	}
 
 	private void updateTime(){

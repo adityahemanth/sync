@@ -47,15 +47,20 @@ class Database {
 	  			cache.put(key, value);
 	  		}
 		}
-					
+
 		return value; 
 	}
 
 	public static void write(String key, String value) {
 		String file = "/database" + key + ".txt";
-		// 
-	}
+		Gson gson = new Gson();
+		
+		try {
 
+		} catch {
+
+		}
+	}
 }
 
 

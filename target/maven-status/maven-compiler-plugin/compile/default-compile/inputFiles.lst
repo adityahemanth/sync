@@ -1,8 +1,8 @@
-/home/ravi/DB/project/sync/src/main/java/com/cs274/app/App.java
-/home/ravi/DB/project/sync/src/main/java/com/cs274/datastore/TimeStamp.java
-/home/ravi/DB/project/sync/src/main/java/com/cs274/scheduler/Scheduler.java
-/home/ravi/DB/project/sync/src/main/java/com/cs274/datastore/Database.java
-/home/ravi/DB/project/sync/src/main/java/com/cs274/scheduler/LockTable.java
-/home/ravi/DB/project/sync/src/main/java/com/cs274/datastore/Memcache.java
-/home/ravi/DB/project/sync/src/main/java/com/cs274/datastore/Page.java
-/home/ravi/DB/project/sync/src/main/java/com/cs274/scheduler/Log.java
+/Users/hemanthaditya/Academics/Quarter 2/CS274/sync/src/main/java/com/cs274/scheduler/Scheduler.java
+/Users/hemanthaditya/Academics/Quarter 2/CS274/sync/src/main/java/com/cs274/scheduler/LockTable.java
+/Users/hemanthaditya/Academics/Quarter 2/CS274/sync/src/main/java/com/cs274/datastore/Page.java
+/Users/hemanthaditya/Academics/Quarter 2/CS274/sync/src/main/java/com/cs274/scheduler/Log.java
+/Users/hemanthaditya/Academics/Quarter 2/CS274/sync/src/main/java/com/cs274/datastore/Memcache.java
+/Users/hemanthaditya/Academics/Quarter 2/CS274/sync/src/main/java/com/cs274/app/App.java
+/Users/hemanthaditya/Academics/Quarter 2/CS274/sync/src/main/java/com/cs274/datastore/TimeStamp.java
+/Users/hemanthaditya/Academics/Quarter 2/CS274/sync/src/main/java/com/cs274/datastore/Database.java
