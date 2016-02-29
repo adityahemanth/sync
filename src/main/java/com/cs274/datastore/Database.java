@@ -23,8 +23,7 @@ class Database {
 		if(value != null )
 			return value;
 
-		else 
-		{
+		else {
 
 			String file = "/database/" + key + ".txt";
 			//f = new File(file);
@@ -38,11 +37,17 @@ class Database {
 				Page data = gson.fromJson(br, Page.class);	
 				value = data.getValue();
 			}
+
 		    catch(IOException e) 
 			{  
 	   			e.printStackTrace();  
 	  		}  
-		}			
+
+	  		if(value != null) {
+	  			cache.put(key, value);
+	  		}
+		}
+					
 		return value; 
 	}
 
