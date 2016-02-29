@@ -1,17 +1,17 @@
 package com.cs274.scheduler;
 
-public class LockTable {
+import java.util.*;
+
+public class LockTable extends HashMap{
 
 	private static LockTable table = null;
 	protected LockTable() {
 
-		// TODO
-		// make a hashmap.
 	}
 
 	public static LockTable getInstance() {
 		if(table == null)
-			table = new LockTable();
+			table = new Hashmap<String, String>();
 
 		return table;
 	}

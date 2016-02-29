@@ -1,10 +1,11 @@
 package com.cs274.datastore;
 
+import com.cs274.scheduler.*;
+
 class Database {
 
 	public static read(String key) {
-		LockTable table = LockTable.getInstance();
-		table
+		if()
 	}
 
 	public static write(String key, String value) {
