@@ -30,7 +30,8 @@ public class Memcache extends HashMap{
 		}
 		else
 		{
-
+			// divy said just keep everything in memory. 
+			// best thing to do, write to file in parallel and also keep the object.
 		}
 	}
 
@@ -39,10 +40,20 @@ public class Memcache extends HashMap{
 		cache.put(key,value);
 	}
 
+	public static void removeObject(String key){
+		//removes the passed key
+		//decrements counter
+	}
+
 	public static String getValue(String key)
 	{
 		return (String)cache.get(key);
 	}
+
+	public static int getCount(){
+		return count;
+	}
+
 	//TODO
 	// override put and get to enable flushing
 	

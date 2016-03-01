@@ -8,10 +8,6 @@ import com.google.gson.GsonBuilder;
 
 class Database {
 
-	//private static InputStream readFile;
-	//private static OutputStream writeFile;
-	//private static File f;
-
 	//loadings memcache
 	static Memcache cache = Memcache.getInstance();
 
@@ -58,7 +54,7 @@ class Database {
 			cache.updateObject(key,value); 
 		}
 
-		if(memvalue == null)      // if not in mem cache, get to memcache
+		else     // if not in mem cache, get to memcache
 		{
 
 			String file = "/database/" + key + ".txt";
@@ -74,7 +70,7 @@ class Database {
 				cache.addNewObject(key,data.getValue()); // read from file  
 				cache.updateObject(key,value);           // update new value in memcache, not yet in file 
 			}
-		    catch(IOException e) 
+		    catch(IOException e)
 			{  
 	   			e.printStackTrace();  
 	  		}  
