@@ -35,6 +35,11 @@ public class Memcache extends HashMap{
 		}
 	}
 
+	public static void removeObject(String key)
+	{
+		cache.remove(key);
+		count--;
+	}
 	public static void updateObject(String key, String value)
 	{
 		cache.put(key,value);
