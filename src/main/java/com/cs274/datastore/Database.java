@@ -15,8 +15,7 @@ class Database {
 	//loadings memcache
 	static Memcache cache = Memcache.getInstance();
 
-	public static String read(String key) 
-	{
+	public static String read(String key) {
 
 		String value = cache.getValue(key);
 
@@ -83,6 +82,11 @@ class Database {
 		
 		return;
 		// 
+	}
+
+	public static void flush(ArrayList<String> keys){
+		//gets a list of keys
+		//write 
 	}
 
 }
