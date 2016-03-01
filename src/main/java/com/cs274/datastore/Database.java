@@ -56,7 +56,8 @@ class Database {
 
 		else     // if not in mem cache, get to memcache
 		{
-
+			
+			cache.updateObject(key,value);
 			String file = "/database/" + key + ".txt";
 			//f = new File(file);
 
@@ -67,13 +68,14 @@ class Database {
 			{
 				BufferedReader br = new BufferedReader(new FileReader(file));  
 				Page data = gson.fromJson(br, Page.class);	
-				cache.addNewObject(key,data.getValue()); // read from file  
-				cache.updateObject(key,value);           // update new value in memcache, not yet in file 
+				//cache.addNewObject(key,data.getValue()); // read from file  
+				//cache.updateObject(key,value);           // update new value in memcache, not yet in file 
 			}
 		    catch(IOException e)
 			{  
 	   			e.printStackTrace();  
 	  		}  
+
 		}			
 		
 		return;
