@@ -22,7 +22,7 @@ public class LockTable extends HashMap{
 	{
 		  // returns transaction id if locked, else returns 0 
 		Long ret = (Long)table.get(key);
-		return (long)ret.intValue();                     
+		return ret;                     
 	}
 
 	public static void lockKey(String key,long tId)

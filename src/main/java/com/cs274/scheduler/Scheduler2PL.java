@@ -11,19 +11,27 @@ public class Scheduler2PL implements Runnable
 	boolean suspended = false;
 	Queue<String> lockedKeys = new LinkedList<String>();
 
-	Scheduler2PL(Transaction t)
+	Scheduler2PL(Transaction trans)
 	{
-		T = t;
+		T = trans;
 	}
 
 	public void run() 
 	{
+		//define a object called object
 		Operation op;
+
+		// while a queue called transaction is not empty
 		while(0 != T.size())
 		{
+			// pop the last one
 			op = T.removeOperation();
+
+			// check if it has the lock for the data item
 			if(0 != lTable.getLockStatus(op.getKey()))
 			{
+				// add this scheduler to another queue so that it
+				// is resumed when the object is freed.
 				lTable.enQueueForKey(op.getKey(),this);
 				try
 				{
@@ -41,8 +49,10 @@ public class Scheduler2PL implements Runnable
           		{
           			e.printStackTrace();
           		}
-          	}	
-          	lTable.lockKey(op.getKey(),T.id);
+          	}
+
+          	// aquire a lock	
+          	lTable.lockKey(op.getKey(),T.getId());
           	lockedKeys.add(op.getKey());
 			// write / read operation
 		}	

@@ -5,6 +5,8 @@ import java.util.*;
 public class LockQueue extends HashMap
 {
 
+	// this is a hashmap singleton pattern
+	// has a string for key and queue for the value (BAD ASS!!)
 	private static LockQueue lqueue = null;
 	
 	protected LockQueue() 
@@ -17,10 +19,19 @@ public class LockQueue extends HashMap
 		return lqueue;
 	}
 
+
 	public static void addToQueue(String key, Scheduler2PL obj)
 	{
-		Queue<Scheduler2PL> queue = new LinkedList<Scheduler2PL>();
-		queue = (Queue)lqueue.get(key); 
+
+		Queue<Scheduler2PL> queue;
+		if(lqueue.get(key) != null){
+			queue = (Queue) lqueue.get(key);
+		}
+
+		else{
+
+			queue = new LinkedList<Scheduler2PL>();
+		}
 		
 		queue.add(obj);
 		lqueue.put(key,queue);

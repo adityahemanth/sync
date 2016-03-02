@@ -9,77 +9,83 @@ import com.google.gson.GsonBuilder;
 class Database {
 
 	//loadings memcache
+	// having only cached objects and no stable storage
+	// recovery is done from the log files.
+
 	static Memcache cache = Memcache.getInstance();
 
 	public static String read(String key) {
 
 		String value = cache.getValue(key);
+		return value;
 
-		if(value != null )
-			return value;
+		// else {
 
-		else {
+		// 	String file = "/database/" + key + ".txt";
+		// 	//f = new File(file);
 
-			String file = "/database/" + key + ".txt";
-			//f = new File(file);
+		// 	// read file
+		// 	// parse JSON with Google Json interpreter (GSON)
+		// 	Gson gson = new Gson();
+		// 	try 
+		// 	{
+		// 		BufferedReader br = new BufferedReader(new FileReader(file));  
+		// 		Page data = gson.fromJson(br, Page.class);	
+		// 		value = data.getValue();
+		// 	}
 
-			// read file
-			// parse JSON with Google Json interpreter (GSON)
-			Gson gson = new Gson();
-			try 
-			{
-				BufferedReader br = new BufferedReader(new FileReader(file));  
-				Page data = gson.fromJson(br, Page.class);	
-				value = data.getValue();
-			}
+		//     catch(IOException e) 
+		// 	{  
+	 //   			e.printStackTrace();  
+	 //  		}  
 
-		    catch(IOException e) 
-			{  
-	   			e.printStackTrace();  
-	  		}  
+	 //  		if(value != null) {
+	 //  			cache.put(key, value);
+	 //  		}
+		// }
 
-	  		if(value != null) {
-	  			cache.put(key, value);
-	  		}
-		}
+		// return value; 
 
-		return value; 
 	}
 
 	public static void write(String key, String value) {
 		
-		String memvalue = (String) cache.get(key);
-		if(memvalue != null )  // if in memcache 
-		{
-			cache.updateObject(key,value); 
-		}
+		cache.put(key,value);
 
-		else     // if not in mem cache, get to memcache
-		{
-			
-			cache.updateObject(key,value);
-			String file = "/database/" + key + ".txt";
-			//f = new File(file);
+		// String memvalue = (String) cache.get(key);
+		// return memvalue;
 
-			// read file
-			// parse JSON with Google Json interpreter (GSON)
-			Gson gson = new Gson();
-			try 
-			{
-				BufferedReader br = new BufferedReader(new FileReader(file));  
-				Page data = gson.fromJson(br, Page.class);	
-				//cache.addNewObject(key,data.getValue()); // read from file  
-				//cache.updateObject(key,value);           // update new value in memcache, not yet in file 
-			}
-		    catch(IOException e)
-			{  
-	   			e.printStackTrace();  
-	  		}  
+		// // if in cache
+		// if(memvalue != null ) {
+		// 	cache.updateObject(key,value); 
+		// }
 
-		}			
+		// // else
+		// else {
+
+		// 	cache.updateObject(key,value);
+		// 	String file = "/database/" + key + ".txt";
+		// 	//f = new File(file);
+
+		// 	// read file
+		// 	// parse JSON with Google Json interpreter (GSON)
+		// 	Gson gson = new Gson();
+		// 	try 
+		// 	{
+		// 		BufferedReader br = new BufferedReader(new FileReader(file));  
+		// 		Page data = gson.fromJson(br, Page.class);	
+		// 		//cache.addNewObject(key,data.getValue()); // read from file  
+		// 		//cache.updateObject(key,value);           // update new value in memcache, not yet in file 
+		// 	}
+		//     catch(IOException e)
+		// 	{  
+	 //   			e.printStackTrace();  
+	 //  		}  
+
+		// }			
 		
-		return;
-		// 
+		// return;
+		// // 
 	}
 
 	public static void flush(ArrayList<String> keys){

@@ -5,22 +5,26 @@ import com.cs274.datastore.TimeStamp;
 
 public class Transaction 
 {
-	long id = TimeStamp.getTime();
-	Queue<Operation> T = new LinkedList<Operation>();	
+	private static long id = TimeStamp.getTime();
+	private static Queue<Operation> T = new LinkedList<Operation>();	
 
 
-	public void addOpeation(Operation op)
+	public static void addOpeation(Operation op)
 	{
 		T.add(op);
 	}
 
-	public Operation removeOperation()
+	public static Operation removeOperation()
 	{
-		return T.remove();
+		return T.remove(); 
 	}
 
-	public int size()
+	public static int size()
 	{
 		return T.size(); 
+	}
+
+	public static long getId(){
+		return id;
 	}
 }

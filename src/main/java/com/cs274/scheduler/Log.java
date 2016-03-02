@@ -14,8 +14,8 @@ public class Log {
 		return log;
 	}
 
+	public static void force() {
+		// forces the log into stable storage.
+	}
+
 }
-
-
-
-// LSNtransaction	object	modified	before-image	time

@@ -1,5 +1,23 @@
 package com.cs274.scheduler;
 
+
+
+
+// 2PL -> in a shard
+// 2PC -> among shards
+// Paxos -> Data centers
+
+
+// what is a shard ?
+// Architure
+
+// Client -> DBClient -> Paxos + 2PClayer -> 2PLlayer -> Database
+// we don't know what the transaction needs in advance. Prevent deadlocks.
+// dectect deadlock cycles. 
+
+// altruistic locking
+
+
 // gets a request
 //		- read
 //		- write
