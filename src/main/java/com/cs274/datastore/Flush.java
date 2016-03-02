@@ -14,14 +14,7 @@ public class Flush implements Runnable{
 
 	public void run(){
 
-		try{
-
-			
-			
-
-		} catch {
-
-		}
+		
 
 	}
 }

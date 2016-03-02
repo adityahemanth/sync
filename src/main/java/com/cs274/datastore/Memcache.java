@@ -45,11 +45,7 @@ public class Memcache extends HashMap{
 		cache.put(key,value);
 	}
 
-	public static void removeObject(String key){
-		//removes the passed key
-		//decrements counter
-	}
-
+	
 	public static String getValue(String key)
 	{
 		return (String)cache.get(key);
