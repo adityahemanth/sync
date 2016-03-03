@@ -91,7 +91,56 @@ datastore.put(e);
 //		1) 
 //		2) 
 
+/* public class DBclient{
+	
+	private static TransTable tt;
+	Paxos p;
+	count = 0;
+
+	public DBclient(){}
+
+	public void op(String op){
+	if(count < n)
+		check // 
+		new Tid = math.rand();
+		tt.add(Tid,3);
+
+	else {
+		Tid = tt.getRandom();
+	}
+
+		p.read(Tid, key);
+		
+	}
+
+
+	
+
+}
+
+
+*/
 
 // abort request
 //		1) read log file from the bottom. (how do you parse this)
+
+
+// client
+//random reads, writes
+// read(key);
+// write(key,value);
+
+
+// DBclient
+// No. of transactions -> 100
+// each opts.
+// Transaction map
+	// random id
+// random tids.
+// read(T1,key);
+
+// transaction 
+// Client -> DBClient -> paxos
+// uid -> random
+// message -> (T(message)) -> 
 

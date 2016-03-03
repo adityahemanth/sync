@@ -18,4 +18,6 @@ public class Log {
 		// forces the log into stable storage.
 	}
 
+	// have to have a before image and an after image
+	// log object
 }

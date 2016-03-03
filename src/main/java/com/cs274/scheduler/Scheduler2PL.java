@@ -5,11 +5,15 @@ import java.util.*;
 
 public class Scheduler2PL implements Runnable 
 {
+	private static final int TIMEOUT = 2;
+
+
    	private Thread t;
 	public static LockTable lTable = LockTable.getInstance();
 	Transaction T;
 	boolean suspended = false;
 	Queue<String> lockedKeys = new LinkedList<String>();
+	Timer timer;
 
 	Scheduler2PL(Transaction trans)
 	{
@@ -22,7 +26,7 @@ public class Scheduler2PL implements Runnable
 		Operation op;
 
 		// while a queue called transaction is not empty
-		while(0 != T.size())
+		while(0 != T.size()) // EPIC !!
 		{
 			// pop the last one
 			op = T.removeOperation();
@@ -32,15 +36,18 @@ public class Scheduler2PL implements Runnable
 			{
 				// add this scheduler to another queue so that it
 				// is resumed when the object is freed.
+				timer = new Timer();
 				lTable.enQueueForKey(op.getKey(),this);
 				try
 				{
-
+					// thread will not switch until this block
+					// is executed.
 					synchronized(this) 
 					{
 						suspended = true;
             			while(suspended) 
             			{
+            				timer.schedule(new AbortManager(), TIMEOUT*1000);
                				wait();
             			}
           			}
@@ -68,6 +75,15 @@ public class Scheduler2PL implements Runnable
 
 	}
 
+	class AbortManager extends TimerTask {
+
+        @Override
+        public void run() {
+            // need to handle abort here
+            // check log files to 
+        }
+    }
+
 	
 	public void start ()
     {
@@ -83,6 +99,5 @@ public class Scheduler2PL implements Runnable
       suspended = false;
        notify();
     }
-
 
 }
