@@ -3,7 +3,6 @@ package com.cs274.Spanner;
 import java.util.*;
 import java.net.*;
 import java.io.*;
-import java.lang.Runnable;
 
 
 public class Client
@@ -14,9 +13,10 @@ public class Client
 	{
 
 		ClientGlobalTable  cTable = ClientGlobalTable.getInstance();
+		ClientConfig config;
 		try 
 		{
-			ServerSocket ss = new ServerSocket(myPort);
+			ServerSocket ss = new ServerSocket(config.myPort);
 			while(1)
 			{
 				Socket s = ss.accept();
@@ -30,7 +30,7 @@ public class Client
 					if(cTable.containsKey(op.tnxId))
 					{
 						Queue<Operation> queue;
-						queue = (Queue) lqueue.get(op.tnxId);
+						queue = (Queue) cTable.get(op.tnxId);
 						queue.add(op);
 						//add to the table
 						cTable.put(op.tnxId,queue);
@@ -43,7 +43,7 @@ public class Client
 						//add to the table
 						cTable.put(op.tnxId,queue);
 
-						new Thread(new ClientTransaction(sock,op.tnxId)).start();
+						new Thread(new ClientTransaction(s,op.tnxId)).start();
 				
 					}
 

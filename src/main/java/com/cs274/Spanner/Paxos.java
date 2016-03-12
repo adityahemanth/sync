@@ -57,13 +57,8 @@ public class Paxos implements Runnable {
 
 	public void run() 
 	{
-		if(startPhase = 1)
-		{
-			//send prepare msg to all followers
-			return;
-		}
-		else
-		{
+		
+		
 			
 			if(0 != TPL.schedule2PLPhase1(T))
 			{
@@ -128,7 +123,7 @@ public class Paxos implements Runnable {
 			sendCommitAcksToAllAndGetResponse();
 
 			
-		}
+		
 
 	}
 
