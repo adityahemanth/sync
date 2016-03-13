@@ -44,4 +44,13 @@ public class Operation implements Serializable
 	{
 		oper = o;
 	}
+
+	public void setValue(String val)
+	{
+		value = val;
+	}
+	public long getTxid()
+	{
+		return tnxid;
+	}
 }

@@ -9,25 +9,19 @@ public class Scheduler2PL
 
    
 	public static LockTable lTable = LockTable.getInstance();
-	Transaction T;
 	boolean suspended = false;
 	Queue<String> lockedKeys = new LinkedList<String>();
 	Timer timer;
+	long txnid;
+
 
 	
-	public boolean schedule2PLPhase1(Transaction T) 
+	// acquires lock for the given operation key 
+	public boolean schedule2PLPhase1(operation op) 
 	{
-		//define a object called object
-		Operation op;
-
-		// while a queue called transaction is not empty
-		while(0 != T.size()) // EPIC !!
-		{
-			// pop the last one
-			op = T.removeOperation();
-
-			// check if it has the lock for the data item
-			if(0 != lTable.getLockStatus(op.getKey()))
+			long lockedtxn = lTable.getLockStatus(op.getKey();	
+			// check if the key is not free  AND if the lock is not acquired on the key for same transaction 	
+			if( (0 != lockedtxn ) && (op.getTxid() != lockedtxn) ) 
 			{
 				// add this scheduler to another queue so that it
 				// is resumed when the object is freed.
@@ -52,29 +46,28 @@ public class Scheduler2PL
           			e.printStackTrace();
           			return 1; // Failure 
           		}
+          		// aquire a lock	
+          		lTable.lockKey(op.getKey(),op.getTxid());
+          		//add key to the locked list
+          		lockedKeys.add(op.getKey());
+          	}
+          	else if(0 == lockedtxn)
+          	{
+          		// aquire a lock	
+          		lTable.lockKey(op.getKey(),op.getTxid());
+          		//add key to the locked list
+          		lockedKeys.add(op.getKey());
           	}
 
-          	// aquire a lock	
-          	lTable.lockKey(op.getKey(),T.getId());
-          	lockedKeys.add(op.getKey());
-			// write / read operation
-		}	
+          	// else transaction already has lock on the key
+          				
 
 		return 0; //Success
-		// Notify the 2PC co-ordinator.
-
-		// wait till you get get commit request from 2PC Co ordinator
-
-		
 
 	}
 
 
-	public boolean schedule2PLProcessingPhase()
-	{
-		// do all wites
-	}
-
+	
 	public boolean scheduler2PLPhase2()
 	{
 
@@ -93,6 +86,11 @@ public class Scheduler2PL
         }
 
         return 0;
+	}
+
+	public void setTxid(long tid)
+	{
+		this.txnid = tid;
 	}
 
 	class AbortManager extends TimerTask {

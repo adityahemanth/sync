@@ -13,9 +13,9 @@ public class DataCenterMain
 	{
 		try
 		{
-			new Thread(new Follower1(paxosLeader)).start();
+			new Thread(new Follower1(paxosLeader)).start();  // spwans follower 1 server
 
-			new Thread(new Follower2(paxosLeader)).start();
+			new Thread(new Follower2(paxosLeader)).start();  // spwans follower 2 server
 		}
 		catch(Exception e)
 		{
@@ -28,7 +28,7 @@ public class DataCenterMain
 
 	public static void main(String args[])
 	{
-		DataCenterGlobalTable  dTable = DataCenterGlobalTable.getLeaderInstance();
+		//DataCenterGlobalTable  dTable = DataCenterGlobalTable.getLeaderInstance();
 		
 		
 		//start follower servers
@@ -52,6 +52,8 @@ public class DataCenterMain
 			while(1)
 			{
 				Socket s = ss.accept();
+				new Thread(new LeaderTransaction(s).start();
+				/*
 				InputStream is = s.getInputStream();
 				ObjectInputStream ois = new ObjectInputStream(is);
 				Operation op = (Operation)ois.readObject();
@@ -83,7 +85,9 @@ public class DataCenterMain
 			}
 
 			
-			is.close();
+			is.close();*/
+
+			}
 			s.close();
 			ss.close();
 		}

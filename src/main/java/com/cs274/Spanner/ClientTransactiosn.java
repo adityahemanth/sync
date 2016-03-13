@@ -9,6 +9,8 @@ public class ClientTransaction implements Runnable
 	String tid;
 	ClientGlobalTable  cTable = ClientGlobalTable.getInstance();
 	Queue<Operation> shardwrites[3];
+	Socket lsocket[3] = { null, null, null};
+	
 	
 
    ClientTransaction(Socket csocket,String txid) 
@@ -16,6 +18,16 @@ public class ClientTransaction implements Runnable
       this.csocket = csocket;
       this.tid = txid;
    }
+
+   public static getLeadersocket(int destPLeader)
+   {
+   		if(null == lsocket[destPLeader] )
+   		{
+   			lsocket[destPLeader] = new Socket(paxosLeadersIP[count],paxosLeadersPost[count]);	
+   		}
+
+   		return lsocket[destPLeader];
+   }	
 
    public void run()
    {
@@ -29,14 +41,14 @@ public class ClientTransaction implements Runnable
 			while(0 != transaction.size())
 			{
 				op = transaction.remove();
-				destPLeader = getDestPaxosLeader(op.key);
+				destPLeader = getDestPaxosLeader(op.getKey());
 
 				if(-1 == destPLeader)
 				{
 					continue;
 				}
 
-				if(op.oper == "read")
+				if(op.getOper() == "read")
 				{
 					OutputStream os = csocket.getOutputStream();
 					ObjectOutputStream oos = new ObjectOutputStream(os);
@@ -47,11 +59,11 @@ public class ClientTransaction implements Runnable
 					// write back the value to ycsb
 					oos.writeObject(opR);
 				}
-				else if(op.oper == "write")
+				else if(op.getOper() == "write")
 				{
 					shardwrites[destPLeader].add(op);
 				}
-				else if(op.oper == "commit")
+				else if(op.getOper() == "commit")
 				{
 					if(0 != shardwrites[0].size())
 					{
@@ -69,18 +81,9 @@ public class ClientTransaction implements Runnable
 					continue;				
 
 				}
-				else if(op.oper == "abort")
+				else if(op.getOper() == "abort")
 				{
 					sendAbortToAllShads();
-					cTable.remove(tid);
-					return;
-				}
-				else if(op.oper == "success" || op.oper == "failure")
-				{
-					OutputStream os = csocket.getOutputStream();
-					ObjectOutputStream oos = new ObjectOutputStream(os);
-					oss.writeObject(ack);
-
 					cTable.remove(tid);
 					return;
 				}
@@ -93,21 +96,25 @@ public class ClientTransaction implements Runnable
 		}
    }
 
-   
+
 
    public static String sendAbortToAllShads()
    {
    		int count = 0;
    		int all = 3;
+   		Operation op;
+
    		try
    		{
    			while(count < all)
    			{
-   				Socket s = new Socket(paxosLeadersIP[count],paxosLeadersPost[count]);
+   				//Socket s = new Socket(paxosLeadersIP[count],paxosLeadersPost[count]);
+   				Socket s = getLeadersocket(count);
 				OutputStream os = s.getOutputStream();
 				ObjectOutputStream oos = new ObjectOutputStream(os);
 				
-				oos.writeObject("abort");
+				op.setOper("abort");
+				oos.writeObject(op);
    			}
    		}
    		catch(Exception e)
@@ -121,7 +128,8 @@ public class ClientTransaction implements Runnable
    {
    		try
 		{
-			Socket s = new Socket(paxosLeadersIP[destPLeader],paxosLeadersPost[paxosLeadersPost]);
+			//Socket s = new Socket(paxosLeadersIP[destPLeader],paxosLeadersPost[paxosLeadersPost]);
+			Socket s = getLeadersocket(destPLeader);
 			OutputStream os = s.getOutputStream();
 			ObjectOutputStream oos = new ObjectOutputStream(os);
 			Operation op;
@@ -130,12 +138,25 @@ public class ClientTransaction implements Runnable
 				op = shardwrites[destPLeader].remove();
 				oos.writeObject(op);
 			}
-			oos.writeObject("commit");
 
+			op.setOper("commit");
+			oos.writeObject(op);
+
+			// get response from paxos leader
 			InputStream is = s.getInputStream();
 			ObjectInputStream ois = new ObjectInputStream(is);
-			String ack = (Operation)ois.readObject();
+			op = (Operation)ois.readObject();
 
+			//send response back to client
+			OutputStream os = csocket.getOutputStream();
+			ObjectOutputStream oos = new ObjectOutputStream(os);
+			oss.writeObject(ack);
+
+			cTable.remove(tid);
+			return;
+			
+
+			
 			oos.close();
 			os.close();
 			s.close();
@@ -152,7 +173,8 @@ public class ClientTransaction implements Runnable
 	{
 		try
 		{
-			Socket s = new Socket(paxosLeadersIP[destPLeader],paxosLeadersPost[paxosLeadersPost]);
+			//Socket s = new Socket(paxosLeadersIP[destPLeader],paxosLeadersPost[paxosLeadersPost]);
+			Socket s = getLeadersocket(destPLeader);
 			OutputStream os = s.getOutputStream();
 			ObjectOutputStream oos = new ObjectOutputStream(os);
 			oos.writeObject(op);

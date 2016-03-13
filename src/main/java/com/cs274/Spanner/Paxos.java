@@ -3,82 +3,48 @@ package com.cs274.Spanner;
 import java.lang.Runnable;
 import java.util.*;
 
-public class Paxos implements Runnable {
+public class Paxos 
+{
 	
-	private Thread t;
-	Transaction T;
-	boolean startPhase = 0;
-	Scheduler2PL TPL;
+	
 	TPCScheduler TPC;
+	Scheduler2PL TPL;
 	static ShardInfo shardList = ShardInfo.getInstance();
 	int majoity = 2;
 	int votes = 0;
 	//list of IP addresses of acceptors in the paxos group
 
-	Paxos(Transaction trans)
+	Paxos(Scheduler2PL obj)
 	{
-		T = trans;
+		this.TPL = obj;
 	}
 
-
-// at the start of the instance
-	Paxos(String start)
+	public static boolean paxosWrite(Operation op) 
 	{
-		if(start == "start")
-		{
-			startPhase = 1;
-		}	
-		//if leader
-		//send prepare
-
-		//else
-		//excpect prepare and send promise
-
-	}
+		
 	
-
-//-------------only at start------------------------------
-	//Paxos Leader's
-	void sendPrepare()  
-	{
-		//send it to all cohorts declaring you are the leader
-	}
-
-	//Paxos Acceptors'
-	void sendPromise()
-	{
-		//send as reply to prepare stating the acceptance of leadership
-	}
-
-
-
-//-------------For all transactions----------------------------
-
-
-	public void run() 
-	{
-		
-		
-			
-			if(0 != TPL.schedule2PLPhase1(T))
+			if(0 != TPL.schedule2PLPhase1(op))
 			{
 				// 2pl failure
-				return;
+				return 1;
 			}
 
-			if(0 != TPL.dowrites(T))
+			if(0 != TPL.dowrite(op))
+			{
+				return 1;
+			}
 
 			if(0 != paxosPhase1())
 			{
 				//paxos phase 1 failed
 				TPC.sendTPCAbortmsg();
-				return;
+				return 1;
 			}
 			
 			if(votes < majoity)
 			{
 				TPC.sendTPCAbortmsg();
-				return;
+				return 1;
 			}
 			else
 			{
@@ -86,8 +52,7 @@ public class Paxos implements Runnable {
 				TPC.sendTPCcommitmsg();
 			}
 			
-			
-			
+						
 			waitForesponseFromTPCCoordinator();
 
 			if(0 != TPL.schedule2PLPhase2())
@@ -154,15 +119,5 @@ public class Paxos implements Runnable {
 	{
 
 	}
-
-	public void start ()
-    {
-      if (t == null)
-      {
-         t = new Thread (this, "");
-         t.start ();
-      }
-    }
-
-
+	
 }

@@ -14,7 +14,7 @@ public class Follower1 implements Runnable
 	public void run()
    	{
    		int follower = 0; 
-		DataCenterGlobalTable  df1Table = DataCenterGlobalTable.getfollower1Instance();
+		//DataCenterGlobalTable  df1Table = DataCenterGlobalTable.getfollower1Instance();
 
 		try 
 		{
@@ -23,7 +23,10 @@ public class Follower1 implements Runnable
 			while(1)
 			{
 				Socket s = ss.accept();
-				InputStream is = s.getInputStream();
+				new Thread(new Follower1Transaction(s)).start();
+				
+
+				/*InputStream is = s.getInputStream();
 				ObjectInputStream ois = new ObjectInputStream(is);
 				Operation op = (Operation)ois.readObject();
 
@@ -55,6 +58,10 @@ public class Follower1 implements Runnable
 
 			
 			is.close();
+			
+			*/
+
+			}
 			s.close();
 			ss.close();
 		}
